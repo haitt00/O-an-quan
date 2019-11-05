@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=5.0">
+	<meta name="author" content="Minh">
+	<title>new</title>
+</head>
+<style type="text/css">
+	.bigbox{
+		background: white;
+		width: 60px;
+		height: 66px;
+		border: groove;
+		text-align: center;
+	}
+	.box{
+		background: white;
+		width: 30px;
+		height: 30px;
+		border: groove;
+		text-align: center;
+	}
+	.sign{
+		background-color: yellow;
+		width: 60px;
+		height: 40px;
+		border: groove;
+		text-align: center;
+	}
+</style>
+<body>
+	<div style="display: inline-flex;">
+		<div class="bigbox" id=0></div> 
+		<div>
+			<div style="display: inline-flex;">
+				<div class="box" id=11></div> 	
+				<div class="box" id=10></div>
+				<div class="box" id=9></div>
+				<div class="box" id=8></div>
+				<div class="box" id=7></div>
+			</div>
+			<div></div>
+			<div style="display: inline-flex;">
+				<div class="box" id=1></div> 	
+				<div class="box" id=2></div>
+				<div class="box" id=3></div>
+				<div class="box" id=4></div>
+				<div class="box" id=5></div>
+			</div>
+		</div>
+		<div class="bigbox" id=6></div> 
+
+		<input type="text" id = "where" style="border: groove; width: 60px; height: 30px; text-align: center;"> 
+		<div style="display: inline-flex;">
+			<div class="sign" id = "l">LEFT</div>
+			<div class="sign" id = "r">RIGHT</div>
+		</div>
+	</div>
+	<div style="display: inline-flex;">
+		<div style="border: groove; width: 40px; height: 40px;" id = "think">Try</div>
+		<div style="height: 10px; width: 40px; border: white;"></div>
+		<div>
+			<div style="display: inline-flex;">
+				<div style="width: 100px; height: 30px; border: groove;">Human score: </div>
+				<div style="width: 30px; height: 30px;" id = "human_score"></div>
+			</div>
+			<div style="display: inline-flex;">
+				<div style="width: 100px; height: 30px; border: groove;">Comp score: </div>
+				<div style="width: 30px; height: 30px;" id = "comp_score"></div>
+			</div>
+		</div>
+	</div>
+	<div style="font-size: 60px; color: green;" id = "result"></div>
+	<script type="text/javascript" src="javascript.js"></script>
+
+</body>
+</html>
