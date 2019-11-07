@@ -195,7 +195,9 @@ function min(a,b){
 computer.think = function(){
 	var state = computer.make_a_copy_state(computer.table);
 	var v, i = 0, action;
-	[v, action] = computer.greed(state);
+	[v, action] = computer.max_value(i, state, -Infinity, Infinity);
+	//[v, action] = computer.greed(state);
+	console.log("****************DONE!!!*******************");
 	return [v, state, action];
 }
 
@@ -216,19 +218,94 @@ computer.greed = function(state){
 	return [v, action];
 }
 
+computer.max_value = function(i, state, alpha, beta){
+	if (state.terminal_check()==1||i>5) return computer.eval(state);
+	state.fix_state(-1);
+	console.log("max_value i = "+i.toString());
+	var v = - Infinity;
+	var action, v_old, next;
+	for (var j =0; j< computer.Action(state).length; j++){
+		v_old = v;
+		//action = computer.Action(state)[j];
+		next = computer.min_value(i+1, computer.Result(state, computer.Action(state)[j]), alpha, beta);
+		if (v<next){
+			v = next;
+			action = computer.Action(state)[j];
+		}
+		if (v>=beta) return v;
+		alpha = max(v, alpha);
+	}
+	console.log("max_value end i = "+i.toString	()+" v = "+v.toString());
+	if (i==0) return [v, action]
+	else return v;
+}
 
+computer.min_value = function(i, state, alpha, beta){
+	console.log("min_value i = "+i.toString());
+	if (state.terminal_check()==1||i>=5) return computer.eval(state);
+	state.fix_state(1);
+	var v = Infinity;
+	for (var j =0; j< human.Action(state).length; j++){
+		console.log(computer.Action(state)[j]);
+		v = min(v, computer.max_value(i+1, human.Result(state, human.Action(state)[j]), alpha, beta));
+		if (v<=alpha) return v;
+		beta = min(v, beta);
+	}	
+	console.log("min_value end i = "+i.toString()+" v = "+v.toString());
+	return v;
+}
+computer.eval_greed = function(state){
+	var value = -Infinity, score, score_max=[0,0];
+	for (var i = 0; i< computer.Action(state).length; ++i){
+		score = computer.Result(state, computer.Action(state)[i]).score;
+		if (value<score[1]){
+			value = score[1];
+			score_max = score;
+		}
+	}
+	return 2*(score_max[0] - score_max[1]);
+
+}
+computer.eval = function(state){
+	var point = 0;
+	//state.fix_state(1);
+	var number = 0;
+	if (state.terminal_check()==1 && state.score[0]>state.score[1]) point += 1000;
+	if (state.terminal_check()==1 && state.score[0]<state.score[1]) point -= 1000;
+	if (state.score[0]!=state.score[0]) point+= state.score[0] - state.score[1];
+	for (var i = 0; i<=11; i++){
+		if (state.blocks[i].side==-1) number+=state.blocks[i].number_pebble;
+		if (state.blocks[i].side== 1) number-=state.blocks[i].number_pebble;
+	}
+
+	point+=number;
+	point+=computer.eval_greed(state);
+	return point;
+}
 //******************************************************
 var human = new player(1,0);
 human.table.set_a_new_game();
 a_table.show();
 
 //*******DISPLAY GAME********
+var number0 = 0;
+var number1 = 0;
+
 for (var i = 0; i<=11; i++){
 	if (0<i&&i<6){
 		document.getElementById(i).ondblclick = function(){
 		this.style.border = "thick solid #0000FF";
-		if (computer.table.terminal_check()==1) 
+		if (computer.table.terminal_check()==1){
+			for (var i = 0; i<=11; i++){
+			if (state.blocks[i].side==-1) number0+=state.blocks[i].number_pebble
+			if (state.blocks[i].side== 1) number1+=state.blocks[i].number_pebble;
+			} 
+			human.table.score[1]+= number1;
+			human.table.score[0]+= number0;e:
+0
 			document.getElementById("result").innerHTML = "Game finish!!!";
+		} 
+			
 		if (document.getElementById("where").value=="l"){
 			human.move(human.table, parseInt(this.id),0);
 		}
@@ -238,7 +315,7 @@ for (var i = 0; i<=11; i++){
 		document.getElementById("human_score").innerHTML = human.table.score[1];
 		document.getElementById("comp_score").innerHTML  = human.table.score[0];
 		}
-		document.getElementById(i).onmouseout = function(){
+		document.getElementById(i).onclick = function(){
 			this.style.border = "groove";
 		}	
 		
@@ -267,8 +344,17 @@ document.getElementById("r").onclick = function(){
 var value, state, action;
 document.getElementById("think").onclick = function(){
 	this.style.border = "thick solid #0000FF";
-	if (computer.table.terminal_check()==1) 
+	var number0= 0, number1 = 0;
+	if (computer.table.terminal_check()==1){
+		for (var i = 0; i<=11; i++){
+			if (state.blocks[i].side==-1) number0+=state.blocks[i].number_pebble
+			if (state.blocks[i].side== 1) number1+=state.blocks[i].number_pebble;
+		} 
+		human.table.score[1]+= number1;
+		human.table.score[0]+= number0;
+
 		return document.getElementById("result").innerHTML = "Game finish!!!";
+	}	
 	[value, state, action] = computer.think();
 	computer.move(computer.table, action[0], action[1]);
 	computer.score += computer.table.score[0];
