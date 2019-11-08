@@ -394,6 +394,7 @@ document.getElementById("think").onmouseout = function(){
 document.getElementById("start").onclick = function(){
 	document.getElementById("game").style.display = "block";
 	human.table.set_a_new_game();
+	a_table.score = [0,0];
 	a_table.show();
 	document.getElementById("list").style.display = "none";
 }
