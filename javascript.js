@@ -263,13 +263,13 @@ computer.eval_greed = function(state){
 			score_max = score;
 		}
 	}
-	return 3*(score_max[0] - score_max[1]);
+	return 2*(score_max[0] - score_max[1]);
 
 }
 computer.eval_one_more_step = function(state){
 	for (var i = 0; i< computer.Action(state).length; ++i){
 		if (computer.Result(state, computer.Action(state)[i]).terminal_check()==1 && state.score[1]>state.score[0]) 
-			return -800;
+			return -40;
 	}
 	return 0;
 }
